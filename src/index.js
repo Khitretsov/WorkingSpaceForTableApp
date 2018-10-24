@@ -1,46 +1,25 @@
 import './style.css';
-import './fileForImport';
+// import './fileForImport';
 
-let element = document.createElement('div');
-element.innerHTML = 'Открой консоль, там сообщение';
-document.body.appendChild(element);
+let table = document.createElement('div');
 
 let obj = {
-    a: 'asd',
-    b: 'sdf',
-    c: 'dfg'
+    data: 'Data is not avalible at this momment',
+    get createTableBlank() {
+        table.innerHTML = this.data;
+        document.body.appendChild(table);
+        return null;
+    },
+    set writeInATable(value) {
+        this.data = value;
+        table.innerHTML = this.data;
+        document.body.appendChild(table);
+    }
 };
 
-let g = [1, 2, 3, 4, 5, 6, 7, 8];
+obj.createTableBlank;
 
-let { a, b, c } = obj;
-
-console.log( g);
-console.log( a, b, c);
-
-function frfr() {    
-    
-    let sum = 0;
-    for (let i = 0; i < arguments.length; i++) {
-        sum = sum + arguments[i];
-        // console.log(arguments[i]);
-    }
-
-    console.log('__________', sum);
-}
-
-frfr( ...g);
-
-class wewe {
-    constructor( firstV, secondV) {
-        this.firstV = firstV;
-        this.secondV = secondV;
-    }
-
-    method() {
-        return this.firstV * this.secondV;
-    }
-}
-
-const blabla = new wewe(10,10);
-console.log(blabla.method());
+// const asincCode = 
+setTimeout(function() {
+    obj.writeInATable = 'ko-ko-ko';
+}, 3000);
