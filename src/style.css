@@ -6,3 +6,8 @@ body {
 .table {
     margin-top: 1em;
 }
+
+.tableHead {
+    background: #fde87b;
+    border-bottom: 0.1em solid black;
+}

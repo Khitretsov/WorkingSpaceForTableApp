@@ -15,14 +15,28 @@ function request(param) {
     ).then(function(response) {
         return response.json();
     }).then(function(myJson) {
-        newTable.changeContent(JSON.stringify(myJson));
-        // console.log(JSON.stringify(myJson));
+        newTable.changeContent(myJson);
+        // newTable.changeContent(JSON.stringify(myJson));
     });
 }
+
+let map = {items: [  // Структура данных (Путь к массиву с данными в приходящем в ответе объекте и массив ключей объектов-элементов массива)
+    'apply_alternate_url',
+    'snippet',
+    'name',
+    // {
+    //     'salary': {
+    //         'currency': 'string',
+    //         'to': 'number',
+    //         'from': 'number',
+    //         'gross': 'boolean'
+    //     }
+    // },
+]};
 
 let form = new MakeAForm(request);
 form.createForm('Ключевое слово для поиска: '); // Создать форму для ввода параметра поиска
 form.setFetch(request); // Передать ф-цию запроса к серверу
 
 let newTable = new BicycleTableCreator('table');
-newTable.createTable();
+newTable.createTable(map);
