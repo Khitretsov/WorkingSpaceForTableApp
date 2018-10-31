@@ -1,13 +1,38 @@
 body {
     margin: 1em 5em;
     background-color: #ffffe7;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+button {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
 .table {
     margin-top: 1em;
+    border-collapse: collapse;
 }
+
+.table tr {
+    text-align: left;
+    background-color: #ffffe7;
+}
+
+.table th {
+    border: 0.1em solid #ddd;
+    padding: 0.4em;
+    font-weight: normal;
+}
+
+.table tr:nth-child(even){ 
+    background-color: #f3f3b4;
+}
+
+/* .table tr:hover {
+} */
 
 .tableHead {
     background: #fde87b;
     border-bottom: 0.1em solid black;
+    /* font-weight: bold; */
 }

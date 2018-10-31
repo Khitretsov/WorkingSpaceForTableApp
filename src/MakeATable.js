@@ -32,7 +32,6 @@ export default function BicycleTableCreator(name) {
         for (let key in map) {
             pathToData = key;
         }
-        // console.log(typeof(content));
         let topRow = document.createElement('tr');
         for (let i = 0; i < map[pathToData].length; i++) {
             let nameOfColumn = document.createElement('th');
@@ -81,19 +80,20 @@ export default function BicycleTableCreator(name) {
 
             if (content[pathToData] === null || content[pathToData].length === undefined) {
                 return;
-            } else {
-                console.log('___2', content[pathToData].length);   
+            } else {   
                 for (let i = 0; i < content[pathToData].length; i++) {
                     let row = document.createElement('tr');
                     for (let j = 0; j < map[pathToData].length; j++) {
                         if (typeof(map[pathToData][j]) === 'object') {  // Вытаскивание данных их вложенных объектов
                             for (let key in map[pathToData][j]) {
                                 map[pathToData][j][key].forEach((itemOfArr) => {
+                                    let item = document.createElement('th');
                                     if (content[pathToData][i][key] !== null) {
-                                        let item = document.createElement('th');
-                                        item.innerText = content[pathToData][i][key][itemOfArr];
-                                        row.appendChild(item);
+                                        item.innerText = content[pathToData][i][key][itemOfArr] == null ? '  ---  ' : content[pathToData][i][key][itemOfArr];
+                                    } else {
+                                        item.innerText = '  ---  ';
                                     }
+                                    row.appendChild(item);
                                 });
                             }
                         } else {
@@ -104,19 +104,7 @@ export default function BicycleTableCreator(name) {
                     }
                     table.appendChild(row);
                 }
-            }     
-
-            // for (let i = 0; i < content[pathToData].length; i++) {
-            //     // console.log('___2', content);   
-            //     let row = document.createElement('tr');
-            //     for (let j = 0; j < map[pathToData].length; j++) {
-            //         let item = document.createElement('th');
-            //         item.innerText = content[pathToData][i][map[pathToData][j]];
-            //         row.appendChild(item);
-            //     }
-            //     table.appendChild(row);
-            // }   
-
+            }  
         // }(map);  // Линтер не даёт выпендриваться
         }
         fillATable(map, content);

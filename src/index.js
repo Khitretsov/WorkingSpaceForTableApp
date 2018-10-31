@@ -22,7 +22,7 @@ function request(param) {
 }
 
 let map = {items: [  // Структура данных (Путь к массиву с данными в приходящем в ответе объекте и массив ключей объектов-элементов массива)
-    'apply_alternate_url',
+    // 'apply_alternate_url',
     {
         'snippet' : [
             'requirement',
