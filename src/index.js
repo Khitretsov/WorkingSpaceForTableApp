@@ -15,23 +15,29 @@ function request(param) {
     ).then(function(response) {
         return response.json();
     }).then(function(myJson) {
-        newTable.changeContent(myJson);
+        // newTable.changeContent(myJson);
+        newTable.changeContent_2(myJson);
         // newTable.changeContent(JSON.stringify(myJson));
     });
 }
 
 let map = {items: [  // Структура данных (Путь к массиву с данными в приходящем в ответе объекте и массив ключей объектов-элементов массива)
     'apply_alternate_url',
-    'snippet',
+    {
+        'snippet' : [
+            'requirement',
+            'responsibility'
+        ]
+    },
     'name',
-    // {
-    //     'salary': {
-    //         'currency': 'string',
-    //         'to': 'number',
-    //         'from': 'number',
-    //         'gross': 'boolean'
-    //     }
-    // },
+    {
+        'salary': [
+            'currency',
+            'to',
+            'from',
+            'gross'
+        ]
+    },
 ]};
 
 let form = new MakeAForm(request);
