@@ -15,9 +15,7 @@ function request(param) {
     ).then(function(response) {
         return response.json();
     }).then(function(myJson) {
-        // newTable.changeContent(myJson);
-        newTable.changeContent_2(myJson);
-        // newTable.changeContent(JSON.stringify(myJson));
+        newTable.changeContent(myJson);
     });
 }
 
@@ -40,9 +38,19 @@ let map = {items: [  // Структура данных (Путь к масси�
     },
 ]};
 
+let nameOfCol = new Map([  // Порядок элементов имеет значение
+    ['name', 'Название'],
+    ['responsibility', 'Суть'],
+    ['requirement', 'Требования'],
+    ['from', 'От'],
+    ['to', 'До'],
+    ['currency', 'Валюта'],
+    ['gross', 'До вычетов'],
+]);
+
 let form = new MakeAForm(request);
 form.createForm('Ключевое слово для поиска: '); // Создать форму для ввода параметра поиска
 form.setFetch(request); // Передать ф-цию запроса к серверу
 
 let newTable = new BicycleTableCreator('table');
-newTable.createTable(map);
+newTable.createTable(map, nameOfCol);

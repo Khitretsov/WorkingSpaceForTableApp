@@ -1,112 +1,72 @@
 export default function BicycleTableCreator(name) {
+
     let table = null;
-
-    // this.state = {};
-    // this.inState = function(name) {
-    //     let state = this.state;
-    //     let property = `buf_${name}`;
-    //     state[property] = null;
-    //     Object.defineProperty(this.state, name, {
-    //         get: function() {
-    //             return state[property];
-    //         },
-    //         set: function(value) {
-    //             state[property] = value;
-    //         }
-    //     });
-    // };
-
     let map = null;
+    let tableHead = null;
+    let data = {};
 
-    this.createTable = function(listOfColumns) {
+    this.createTable = function(mapping, nameOfCol) {
         table = document.createElement('table');
         table.classList.add(name);
         table.innerHTML = 'table is empty';
         document.body.appendChild(table);
-        map = listOfColumns;
+        map = mapping;
+        tableHead = nameOfCol;
+
+        let arr = map[Object.keys(map)[0]];
+        for (let i = 0; i < arr.length; i++ ) {
+            if (typeof(arr[i]) != 'object') {
+                data[arr[i]] = [];
+            } else {
+                let subArr = arr[i][Object.keys(arr[i])];
+                for (let j = 0; j < subArr.length; j++) {
+                    data[subArr[j]] = [];
+                }
+            }
+        }
     };
+
+    function transformData(content) {
+        let arrOfData = content[Object.keys(content)[0]];
+        arrOfData.forEach((item) => {
+            map[Object.keys(map)[0]].forEach((item2) => {
+                if (typeof(item2) != 'object') {
+                    data[item2].push(item.hasOwnProperty(item2) ? item[item2] : '---');
+                } else {
+                    let nameOfComplexProp = Object.keys(item2)[0];
+                    item2[Object.keys(item2)[0]].forEach((item2) => {
+                        data[item2].push(item[nameOfComplexProp] == null ? null : item[nameOfComplexProp].hasOwnProperty(item2) ? item[nameOfComplexProp][item2] : null);
+                    });
+                } 
+            });            
+        });
+    }
 
     this.changeContent = function(content) {
-        // table.innerHTML = this.state.item = content;
-        let pathToData = null;
-        for (let key in map) {
-            pathToData = key;
-        }
-        let topRow = document.createElement('tr');
-        for (let i = 0; i < map[pathToData].length; i++) {
+        transformData(content);
+
+        let thead = document.createElement('thead');
+        let colums = document.createElement('tr');
+        for (let prop of tableHead.values()) {
             let nameOfColumn = document.createElement('th');
-            nameOfColumn.innerText = map[pathToData][i];
-            nameOfColumn.classList.add('tableHead');
-            topRow.appendChild(nameOfColumn);
+            nameOfColumn.innerText = prop;
+            colums.appendChild(nameOfColumn);
         }
+        thead.appendChild(colums);
+        table.childNodes[0].replaceWith(thead);
 
-        table.childNodes[0].replaceWith(topRow);
-
-        for (let i = 0; i < content[pathToData].length; i++) {
-            console.log(content[pathToData][i]);   
+        let tbody = document.createElement('tbody');
+        
+        for (let i = 0; i < data[Object.keys(data)[0]].length; i++) {
             let row = document.createElement('tr');
-            for (let j = 0; j < map[pathToData].length; j++) {
+            for (let key of tableHead.keys()) {
                 let item = document.createElement('th');
-                item.innerText = content[pathToData][i][map[pathToData][j]];
+                item.innerText = data[key][i];
                 row.appendChild(item);
             }
-            table.appendChild(row);
+            tbody.appendChild(row);
         }
-    };
 
-    this.changeContent_2 = function(content) {
-        let topRow = document.createElement('tr');
-        function fillATable(map, content) {
-            let pathToData = null;
-            for (let key in map) {
-                pathToData = key;
-            }
-            for (let i = 0; i < map[pathToData].length; i++) {
-                if (typeof(map[pathToData][i]) === 'object' ) {  // Возможно нужна проверка на null
-                    // Это рекурсия. Она действует только для заполения шапки таблицы. 
-                    // (По другому не вышло, по причине структуры данных. 
-                    // Надо убрать эту рекурсию)
-                    fillATable(map[pathToData][i], content[pathToData][i]);
-                    console.log(map[pathToData][i], content[pathToData][i]);
-                } else {
-                    let nameOfColumn = document.createElement('th');
-                    nameOfColumn.innerText = map[pathToData][i];
-                    nameOfColumn.classList.add('tableHead');
-                    topRow.appendChild(nameOfColumn);
-                }
-            }
-
-            table.childNodes[0].replaceWith(topRow);
-
-            if (content[pathToData] === null || content[pathToData].length === undefined) {
-                return;
-            } else {   
-                for (let i = 0; i < content[pathToData].length; i++) {
-                    let row = document.createElement('tr');
-                    for (let j = 0; j < map[pathToData].length; j++) {
-                        if (typeof(map[pathToData][j]) === 'object') {  // Вытаскивание данных их вложенных объектов
-                            for (let key in map[pathToData][j]) {
-                                map[pathToData][j][key].forEach((itemOfArr) => {
-                                    let item = document.createElement('th');
-                                    if (content[pathToData][i][key] !== null) {
-                                        item.innerText = content[pathToData][i][key][itemOfArr] == null ? '  ---  ' : content[pathToData][i][key][itemOfArr];
-                                    } else {
-                                        item.innerText = '  ---  ';
-                                    }
-                                    row.appendChild(item);
-                                });
-                            }
-                        } else {
-                            let item = document.createElement('th');
-                            item.innerText = content[pathToData][i][map[pathToData][j]];
-                            row.appendChild(item);
-                        }                     
-                    }
-                    table.appendChild(row);
-                }
-            }  
-        // }(map);  // Линтер не даёт выпендриваться
-        }
-        fillATable(map, content);
+        table.appendChild(tbody);
     };
 }
