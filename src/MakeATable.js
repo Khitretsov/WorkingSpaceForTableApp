@@ -55,7 +55,7 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
 
         let lengthOfData = data[Object.keys(data)[0]].length;
 
-        let maxPage = lengthOfData % pagination == 0 ? lengthOfData / pagination : lengthOfData / pagination + 1;
+        let maxPage = lengthOfData % pagination == 0 ? lengthOfData / pagination : Math.trunc(lengthOfData / pagination) + 1;
         
         for (let i = 0; i < maxPage; i++) {
             let span = document.createElement('span');
@@ -100,7 +100,7 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
             let row = document.createElement('tr');
             for (let key of tableHead.keys()) {
                 let item = document.createElement('th');
-                item.innerText = data[key][i];
+                item.innerText = data[key][i] == undefined ? null : data[key][i];
                 row.appendChild(item);
             }
             tbody.appendChild(row);
