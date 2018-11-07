@@ -19,23 +19,11 @@ function request(param) {
     });
 }
 
-let map = {items: [  // Структура данных (Путь к массиву с данными в приходящем в ответе объекте и массив ключей объектов-элементов массива)
-    // 'apply_alternate_url',
-    {
-        'snippet' : [
-            'requirement',
-            'responsibility'
-        ]
-    },
+let map = {items: [  // Структура данных (Путь к массиву с данными в приходящем ответе и массив ключей объектов-элементов массива)
+    { 'snippet' : ['requirement', 'responsibility'] },
+    { 'salary': ['currency', 'to', 'from', 'gross'] },
     'name',
-    {
-        'salary': [
-            'currency',
-            'to',
-            'from',
-            'gross'
-        ]
-    },
+    // 'apply_alternate_url',
 ]};
 
 let nameOfCol = new Map([  // Порядок элементов имеет значение
@@ -48,9 +36,7 @@ let nameOfCol = new Map([  // Порядок элементов имеет зн�
     ['gross', 'До вычетов'],
 ]);
 
-let form = new MakeAForm(request);
-form.createForm('Ключевое слово для поиска: '); // Создать форму для ввода параметра поиска
-form.setFetch(request); // Передать ф-цию запроса к серверу
+let form = new MakeAForm(request, 'Ключевое слово для поиска: ', 'Поиск произведён по слову: '); /* eslint-disable-line */
+// new MakeAForm(request, 'Ключевое слово для поиска: ');
 
-let newTable = new BicycleTableCreator('table');
-newTable.createTable(map, nameOfCol);
+let newTable = new BicycleTableCreator('table', map, nameOfCol, 5);

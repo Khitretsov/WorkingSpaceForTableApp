@@ -1,11 +1,11 @@
-export default function BicycleTableCreator(name) {
+export default function BicycleTableCreator(name, mapping, nameOfCol, pagination) {
 
     let table = null;
     let map = null;
     let tableHead = null;
     let data = {};
 
-    this.createTable = function(mapping, nameOfCol) {
+    (function() { // Наверно это сингхлтооон
         table = document.createElement('table');
         table.classList.add(name);
         table.innerHTML = 'table is empty';
@@ -24,9 +24,14 @@ export default function BicycleTableCreator(name) {
                 }
             }
         }
-    };
+    }());
 
-    function transformData(content) {
+    function transformData(content) {  // Вызываться должна только при получении ответа с сервера
+        if (data[Object.keys(data)[0]].length != 0) {
+            for (let key in data) {
+                data[key] = [];
+            }
+        }
         let arrOfData = content[Object.keys(content)[0]];
         arrOfData.forEach((item) => {
             map[Object.keys(map)[0]].forEach((item2) => {
@@ -45,6 +50,39 @@ export default function BicycleTableCreator(name) {
     this.changeContent = function(content) {
         transformData(content);
 
+        let tfoot = document.createElement('tfoot');
+        table.append(tfoot);
+
+        let lengthOfData = data[Object.keys(data)[0]].length;
+
+        let maxPage = lengthOfData % pagination == 0 ? lengthOfData / pagination : lengthOfData / pagination + 1;
+        
+        for (let i = 0; i < maxPage; i++) {
+            let span = document.createElement('span');
+            span.innerHTML = i + 1;
+            span.onclick = function(e) {
+                console.log(e.target.innerHTML);
+                range.changePage = +e.target.innerHTML - 1;
+                createTable(range);
+            };
+            tfoot.appendChild(span);
+        }
+
+        let range = {
+            start: 0,
+            end: pagination,
+            set changePage(value) {
+                this.start = value*pagination;
+                this.end = value*pagination + pagination;
+            }
+        };
+
+        createTable(range);
+    };
+
+    function createTable(range) {  // Не должна быть внешним методом. Служебная ф-ция для пагинации и сортировки
+        // transformData(content);  // Эта ф-ция не должна здесь вызываться. 
+        console.log(range);
         let thead = document.createElement('thead');
         let colums = document.createElement('tr');
         for (let prop of tableHead.values()) {
@@ -57,7 +95,8 @@ export default function BicycleTableCreator(name) {
 
         let tbody = document.createElement('tbody');
         
-        for (let i = 0; i < data[Object.keys(data)[0]].length; i++) {
+        // for (let i = 0; i < data[Object.keys(data)[0]].length; i++) {
+        for (let i = range.start; i < range.end; i++) {
             let row = document.createElement('tr');
             for (let key of tableHead.keys()) {
                 let item = document.createElement('th');
@@ -66,7 +105,10 @@ export default function BicycleTableCreator(name) {
             }
             tbody.appendChild(row);
         }
-
-        table.appendChild(tbody);
-    };
+        if (table.tBodies.length != 0) {
+            table.tBodies[0].replaceWith(tbody);
+        } else {
+            table.appendChild(tbody);
+        }
+    }
 }

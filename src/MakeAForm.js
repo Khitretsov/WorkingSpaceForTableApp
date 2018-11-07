@@ -1,42 +1,20 @@
 
-function MakeAForm() {
-    let funcForFetch = null;
-    this.createForm = function(text) {
+function MakeAForm(request, text_1, text_2) {
+    (function() {  // Зачем я код ниже оборачивал в дополнительную ф-цию?
         let input = document.createElement('input');
         let button = document.createElement('button');
+        let div = document.createElement('div');
+        div.insertAdjacentHTML('afterbegin', '<span></span>');
+        div.insertAdjacentText('afterbegin', text_2);
+
         button.innerHTML = 'Поиск';
-        let onClick = this.getData;
         button.onclick = function() {
-            onClick(input.value);
+            request((input.value));
+            div.lastChild.innerHTML = input.value;
         };
-        document.body.append(input, button);
-        input.insertAdjacentText('beforeBegin', text);
-    };
-
-    this.setFetch = function(request) {
-        funcForFetch = request; 
-    };
-    this.getData = function(param) {
-        funcForFetch(param);
-    };
-
-    
+        document.body.append(input, button, div);
+        input.insertAdjacentText('beforeBegin', text_1);
+    }());    
 }
 
 export default MakeAForm;
-
-
-// let input = document.createElement('input');
-// input.setAttribute('value', newTable.state.item);
-// input.oninput = function change(e) {
-//     console.log('__|__');
-//     newTable.state.item = e.data;
-//     let newInput = document.createElement('input');
-//     newInput.setAttribute('value', newTable.state.item);
-//     newInput.oninput = function(e) {
-//         change(e);
-//     };
-//     input.replaceWith(newInput);
-// };
-
-// document.body.appendChild(input);
