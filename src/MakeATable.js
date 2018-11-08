@@ -69,40 +69,31 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
         }
 
         tfoot.onclick = function(e) {  //  Проделегируем события
-            //  Надо переделать эту ф-цию
-            if (maxPage == 1) return;
-            if (!e.target.hasAttribute('name')) {
+            tfoot.firstChild.classList.remove('arrow_disable');
+            tfoot.lastChild.classList.remove('arrow_disable');
+            if (!isNaN(+e.target.innerHTML)) {
+                tfoot.getElementsByClassName('selected')[0].classList.remove('selected');
+                tfoot.children[+e.target.innerHTML].classList.add('selected');
                 range.changePage = +e.target.innerHTML - 1;
-                createTable(range);
+            } else {
                 tfoot.getElementsByClassName('selected')[0].classList.remove('selected');
-                e.target.classList.add('selected');
-                if (e.target.innerHTML == 1) {
-                    tfoot.firstChild.classList.contains('arrow_disable') ? null : tfoot.firstChild.classList.add('arrow_disable');
-                    tfoot.lastChild.classList.remove('arrow_disable');
-                } else if (e.target.innerHTML == maxPage) {
-                    tfoot.lastChild.classList.contains('arrow_disable') ? null : tfoot.lastChild.classList.add('arrow_disable');
-                    tfoot.firstChild.classList.remove('arrow_disable');
+                if (e.target == tfoot.firstChild) {
+                    range.changePage = range.currentPage - 1;
+                    tfoot.children[range.currentPage + 1].classList.add('selected');
                 } else {
-                    tfoot.firstChild.classList.remove('arrow_disable');
-                    tfoot.lastChild.classList.remove('arrow_disable');
+                    range.changePage = range.currentPage + 1;
+                    tfoot.children[range.currentPage + 1].classList.add('selected');
                 }
-            } else if (e.target == tfoot.firstChild) {
-                if (e.target.classList.contains('arrow_disable')) return;
-                tfoot.getElementsByClassName('selected')[0].classList.remove('selected');
-                tfoot.lastChild.classList.contains('arrow_disable') ? tfoot.lastChild.classList.remove('arrow_disable') : null;
-                range.changePage = range.currentPage - 1;
-                tfoot.children[range.currentPage + 1].classList.add('selected');
-                if (range.currentPage == 0) e.target.classList.add('arrow_disable');
-                createTable(range);
-            } else if (e.target == tfoot.lastChild) {
-                if (e.target.classList.contains('arrow_disable')) return;
-                tfoot.getElementsByClassName('selected')[0].classList.remove('selected');
-                tfoot.firstChild.classList.contains('arrow_disable') ? tfoot.firstChild.classList.remove('arrow_disable') : null;
-                range.changePage = range.currentPage + 1;
-                tfoot.children[range.currentPage + 1].classList.add('selected');
-                if (range.currentPage + 1 == maxPage) e.target.classList.add('arrow_disable');
-                createTable(range);
             }
+            if (range.currentPage == 0) {
+                tfoot.firstChild.classList.add('arrow_disable');
+            } else if (range.currentPage == tfoot.children.length - 3) {
+                tfoot.lastChild.classList.add('arrow_disable');
+            } else {
+                tfoot.firstChild.classList.remove('arrow_disable');
+                tfoot.lastChild.classList.remove('arrow_disable');
+            }
+            createTable(range);
         };
         table.append(tfoot);
 
