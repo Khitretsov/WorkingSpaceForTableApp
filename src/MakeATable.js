@@ -1,3 +1,6 @@
+import tableFunc from './tableFunc';
+import transformDataFunc from './transformDataFunc';
+
 export default function BicycleTableCreator(name, mapping, nameOfCol, pagination) {
 
     let table = null;
@@ -26,27 +29,11 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
         }
     }());
 
-    function transformData(content) {  // Вызываться должна только при получении ответа с сервера
-        if (data[Object.keys(data)[0]].length != 0) {
-            for (let key in data) {
-                data[key] = [];
-            }
-        }
-        let arrOfData = content[Object.keys(content)[0]];
-        arrOfData.forEach((item) => {
-            map[Object.keys(map)[0]].forEach((item2) => {
-                if (typeof(item2) != 'object') {
-                    data[item2].push(item.hasOwnProperty(item2) ? item[item2] : '---');
-                } else {
-                    let nameOfComplexProp = Object.keys(item2)[0];
-                    item2[Object.keys(item2)[0]].forEach((item2) => {
-                        data[item2].push(item[nameOfComplexProp] == null ? null : item[nameOfComplexProp].hasOwnProperty(item2) ? item[nameOfComplexProp][item2] : null);
-                    });
-                } 
-            });            
-        });
-    }
+    //  Две служебные ф-ции
+    let createTable = tableFunc(data, tableHead, table);
+    let transformData = transformDataFunc(data, map);
 
+    //  Ф-ция отрисовки таблицы с пагинацией
     this.changeContent = function(content) {
         transformData(content);
 
@@ -82,6 +69,7 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
         }
 
         tfoot.onclick = function(e) {  //  Проделегируем события
+            //  Надо переделать эту ф-цию
             if (maxPage == 1) return;
             if (!e.target.hasAttribute('name')) {
                 range.changePage = +e.target.innerHTML - 1;
@@ -132,35 +120,4 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
         createTable(range);
     };
 
-    function createTable(range) {  
-        
-        console.log(range.currentPage);
-        let thead = document.createElement('thead');
-        let colums = document.createElement('tr');
-        for (let prop of tableHead.values()) {
-            let nameOfColumn = document.createElement('th');
-            nameOfColumn.innerText = prop;
-            colums.appendChild(nameOfColumn);
-        }
-        thead.appendChild(colums);
-        table.childNodes[0].replaceWith(thead);
-
-        let tbody = document.createElement('tbody');
-        
-        // for (let i = 0; i < data[Object.keys(data)[0]].length; i++) {
-        for (let i = range.start; i < range.end; i++) {
-            let row = document.createElement('tr');
-            for (let key of tableHead.keys()) {
-                let item = document.createElement('th');
-                item.innerText = data[key][i] == undefined ? null : data[key][i];
-                row.appendChild(item);
-            }
-            tbody.appendChild(row);
-        }
-        if (table.tBodies.length != 0) {
-            table.tBodies[0].replaceWith(tbody);
-        } else {
-            table.appendChild(tbody);
-        }
-    }
 }
