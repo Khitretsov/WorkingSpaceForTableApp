@@ -39,4 +39,4 @@ let nameOfCol = new Map([  // Порядок элементов имеет зн�
 let form = new MakeAForm(request, 'Ключевое слово для поиска: ', 'Поиск произведён по слову: '); /* eslint-disable-line */
 // new MakeAForm(request, 'Ключевое слово для поиска: ');
 
-let newTable = new BicycleTableCreator('table', map, nameOfCol, 7);
+let newTable = new BicycleTableCreator('table', map, nameOfCol, 3);
