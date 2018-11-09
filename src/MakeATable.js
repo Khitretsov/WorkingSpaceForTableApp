@@ -69,7 +69,7 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
         }
 
         caption.onclick = function(e) {  //  Проделегируем события
-            if (caption.getElementsByClassName('selected').length == 0) return;
+            if (caption.getElementsByClassName('selected').length == 0 || caption.children.length == 3) return;
             if (!isNaN(+e.target.innerHTML)) {
                 caption.firstChild.classList.remove('arrow_disable');
                 caption.lastChild.classList.remove('arrow_disable');
