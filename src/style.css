@@ -9,7 +9,7 @@ button {
 }
 
 .table {
-    margin-top: 1em;
+    margin-top: 0.5em;
     border-collapse: collapse;
 }
 
@@ -40,20 +40,21 @@ button {
     font-weight: bold;
 }
 
-.table tfoot {
+.table caption {
     background: #ffffe7;
-    border-top: 0.15em solid black;
+    /* border-top: 0.15em solid black; */
     font-weight: bold;
+    margin-bottom: 0.5em;
 }
 
-.table tfoot span {
+.table caption span {
     padding: 0em 0.6em;
 }
 
-.table tfoot .selected {
+.table caption .selected {
     background: rgb(226, 104, 104);
 }
 
-.table tfoot .arrow_disable {
+.table caption .arrow_disable {
     color: rgb(196, 190, 190);
 }

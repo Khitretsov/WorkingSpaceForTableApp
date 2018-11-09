@@ -37,11 +37,11 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
     this.changeContent = function(content) {
         transformData(content);
 
-        if (table.getElementsByTagName('tfoot')[0]) {
-            table.removeChild(table.getElementsByTagName('tfoot')[0]);
+        if (table.getElementsByTagName('caption')[0]) {
+            table.removeChild(table.getElementsByTagName('caption')[0]);
         }
 
-        let tfoot = document.createElement('tfoot');
+        let caption = document.createElement('caption');
         
         let lengthOfData = data[Object.keys(data)[0]].length;
         let maxPage = lengthOfData % pagination == 0 ? lengthOfData / pagination : Math.trunc(lengthOfData / pagination) + 1;
@@ -50,7 +50,7 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
             let span = document.createElement('span');
             span.innerHTML = i + 1;
             i == 0 ? span.classList.add('selected') : null;  // Хо-хо
-            tfoot.appendChild(span);
+            caption.appendChild(span);
         }
         
         for (let i = 0; i < 2; i++ ) {
@@ -58,50 +58,56 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
             if (i) {
                 span.innerHTML = 'Следующая';
                 span.setAttribute('name', 'next');
-                maxPage == 1 ? span.classList.add('arrow_disable') : null;
-                tfoot.append(span);
+                maxPage == 1 || maxPage == 0 ? span.classList.add('arrow_disable') : null;
+                caption.append(span);
             } else {
                 span.innerHTML = 'Предидущая';
                 span.setAttribute('name', 'previous');
                 span.classList.add('arrow_disable');
-                tfoot.prepend(span);
+                caption.prepend(span);
             }
         }
 
-        tfoot.onclick = function(e) {  //  Проделегируем события
-            tfoot.firstChild.classList.remove('arrow_disable');
-            tfoot.lastChild.classList.remove('arrow_disable');
+        caption.onclick = function(e) {  //  Проделегируем события
+            if (caption.getElementsByClassName('selected').length == 0) return;
             if (!isNaN(+e.target.innerHTML)) {
-                tfoot.getElementsByClassName('selected')[0].classList.remove('selected');
-                tfoot.children[+e.target.innerHTML].classList.add('selected');
+                caption.firstChild.classList.remove('arrow_disable');
+                caption.lastChild.classList.remove('arrow_disable');
+                caption.getElementsByClassName('selected')[0].classList.remove('selected');
+                caption.children[+e.target.innerHTML].classList.add('selected');
                 range.changePage = +e.target.innerHTML - 1;
             } else {
-                tfoot.getElementsByClassName('selected')[0].classList.remove('selected');
-                if (e.target == tfoot.firstChild) {
+                if (e.target == caption.firstChild) {
+                    if (range.currentPage == 0) return;
                     range.changePage = range.currentPage - 1;
-                    tfoot.children[range.currentPage + 1].classList.add('selected');
+                    caption.getElementsByClassName('selected')[0].classList.remove('selected');
+                    caption.children[range.currentPage + 1].classList.add('selected');
                 } else {
+                    if (caption.getElementsByClassName('selected')[0].innerHTML == caption.children.length - 2) return;
                     range.changePage = range.currentPage + 1;
-                    tfoot.children[range.currentPage + 1].classList.add('selected');
+                    caption.getElementsByClassName('selected')[0].classList.remove('selected');
+                    caption.children[range.currentPage + 1].classList.add('selected');
                 }
             }
             if (range.currentPage == 0) {
-                tfoot.firstChild.classList.add('arrow_disable');
-            } else if (range.currentPage == tfoot.children.length - 3) {
-                tfoot.lastChild.classList.add('arrow_disable');
+                caption.firstChild.classList.add('arrow_disable');
+            } else if (range.currentPage == caption.children.length - 3) {
+                caption.lastChild.classList.add('arrow_disable');
             } else {
-                tfoot.firstChild.classList.remove('arrow_disable');
-                tfoot.lastChild.classList.remove('arrow_disable');
+                caption.firstChild.classList.remove('arrow_disable');
+                caption.lastChild.classList.remove('arrow_disable');
             }
             createTable(range);
         };
-        table.append(tfoot);
 
+        table.append(caption);
+       
         let range = {
             start: 0,
             end: pagination,
             currentPage: 0,
             set changePage(value) {
+                // value = value < 0 ? 0 : value;
                 this.start = value*pagination;
                 this.end = value*pagination + pagination;
                 this.currentPage = value;
