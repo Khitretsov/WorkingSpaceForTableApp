@@ -115,6 +115,54 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, pagination
         };
 
         createTable(range);
+
+        // console.log(table, table.tHead);
+        table.tHead.onclick = function(e) {
+            let sortForColumn;
+            for (let value of nameOfCol) {
+                if (e.target.innerHTML == value[1]) {
+                    sortForColumn = value[0];
+                }
+            }
+
+            function sort(data, count) {
+                if (count == undefined) count = 0;
+                let arr = data[sortForColumn];
+
+                let indexOfMaxElem = 0;
+                for (let i = 1; i < arr.length - count; i++) {
+                    if (!isNaN(+arr[i])) {
+                        +arr[i];
+                        +arr[indexOfMaxElem];
+                    }
+                    if (arr[i] > arr[indexOfMaxElem]) {
+                        indexOfMaxElem = i;
+                    }
+                }
+
+                let buf = arr[arr.length - 1 - count];
+                arr[arr.length - 1 - count] = arr[indexOfMaxElem];
+                arr[indexOfMaxElem] = buf;
+
+                for (let key of nameOfCol.keys()) {
+                    if (key == sortForColumn) continue;
+                    let buf = data[key][arr.length - 1 - count];
+                    data[key][arr.length - 1 - count] = data[key][indexOfMaxElem];
+                    data[key][indexOfMaxElem] = buf;
+                }
+
+                if (count < arr.length - 1) {
+                    count++;
+                    sort(data, count);
+                } else {
+                    console.log(data);
+                }
+            }
+            console.log(data);
+            
+            sort(data);
+        };
+
     };
 
 }
