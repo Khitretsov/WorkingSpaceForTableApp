@@ -1,4 +1,4 @@
-export default function transformDataFunc(data, map) { 
+export default function transformDataFunc(data, copiedData, map) { 
     return function(content) {
         if (data[Object.keys(data)[0]].length != 0) {
             for (let key in data) {
@@ -18,5 +18,10 @@ export default function transformDataFunc(data, map) {
                 } 
             });            
         });
+        for (let key in data) {
+            copiedData[key] = data[key].map(item => {
+                return item;
+            });
+        }
     };
 }
