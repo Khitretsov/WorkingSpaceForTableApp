@@ -1,4 +1,4 @@
-export default function tableFunc(data, tableHead, table) {
+export default function tableCreater(data, tableHead, table) {
         
     return function(range) {
         // console.log(range.currentPage);

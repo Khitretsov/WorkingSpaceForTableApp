@@ -1,7 +1,7 @@
-import tableFunc from './tableCreater';
+import tableCreater from './tableCreater';
 
-export default function paginTableFunc(copiedData, tableHead, table, amountOfRow) {  // Переименовать copiedData в data 
-    let createTable = tableFunc(copiedData, tableHead, table);
+export default function paginTableCreater(copiedData, tableHead, table, amountOfRow) {  // Переименовать copiedData в data 
+    let createTable = tableCreater(copiedData, tableHead, table);
 
     return function() {
         if (table.getElementsByTagName('caption')[0]) {
