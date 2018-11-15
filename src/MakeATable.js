@@ -7,7 +7,6 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRo
     let map = null;
     let tableHead = null;
     let data = {};
-    let copiedData = {};
 
     (function() { // Наверно это сингхлтооон
         table = document.createElement('table');
@@ -31,11 +30,19 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRo
     }());
 
     //  Cлужебная ф-ция
-    let transformData = transformDataFunc(data, copiedData, map);
+    let transformData = transformDataFunc(data, map);
 
     //  Ф-ция отрисовки таблицы с пагинацией и сортировкой
     this.changeContent = function(content) {
         transformData(content);
+
+        let copiedData = {};
+        for (let key in data) {
+            copiedData[key] = data[key].map(item => {
+                return item;
+            });
+        }
+
         let orderOfSortAndCol = {
             order: 0,
             colName: ''
@@ -45,8 +52,8 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRo
         paginTable();
 
         table.onclick = function sorting(e) {
-            // console.dir(e.target);
             if (e.target.parentElement.parentElement.nodeName != 'THEAD') {
+                selectedColl();
                 return;
             } else {
                 if (orderOfSortAndCol.colName != e.target.innerHTML) {
@@ -77,12 +84,13 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRo
                         });
                     }
                     paginTable();
+                    selectedColl();
                     return;
                 }
 
                 function recursion(copiedData, count) {
                     if (count == undefined) count = 0;
-                    
+
                     let arr = copiedData[sortForColumn];
                     let indexOfMaxElem = 0;
 
@@ -124,8 +132,25 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRo
             }
             sort(copiedData);
             paginTable();
+
+            function selectedColl() {  //  Ф-ция для подсветки выбранных для сортировки столбцов
+                Array.prototype.forEach.call(document.getElementsByClassName('table')[0].tHead.firstChild.children, (item) => {
+                    if (item.innerHTML == orderOfSortAndCol.colName) {
+                        switch(orderOfSortAndCol.order) {
+                        case 0:
+                            item.classList.remove('selected');
+                            break;
+                        case -1:
+                            item.classList.remove('selected');
+                            item.classList.add('selected_2');
+                            break;
+                        default:
+                            item.classList.add('selected');
+                        }                        
+                    }
+                });
+            }
+            selectedColl();
         };
-
     };
-
 }

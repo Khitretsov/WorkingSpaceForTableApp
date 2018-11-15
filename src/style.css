@@ -58,3 +58,13 @@ button {
 .table caption .arrow_disable {
     color: rgb(196, 190, 190);
 }
+
+.table thead .selected {
+    text-decoration: underline;
+    background: #d7f8a2fb;
+}
+
+.table thead .selected_2 {
+    text-decoration: underline;
+    background: #b1f83ffb;
+}
