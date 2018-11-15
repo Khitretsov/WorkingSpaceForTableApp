@@ -8,6 +8,33 @@ button {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
+.form {
+    border-bottom: 0.08em solid rgb(226, 104, 104);
+    margin-bottom: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.form input {
+    position: absolute;
+    left: 30em;
+}
+
+.form button {
+    position: absolute;
+    left: 43em;
+}
+
+.form div {
+    margin-top: 0.5em;
+}
+
+.form span {
+    position: absolute;
+    right: 25em;
+    padding-right: 1.2em;
+    border-right: 1em solid rgb(226, 104, 104);
+}
+
 .table {
     margin-top: 0.5em;
     border-collapse: collapse;
@@ -68,3 +95,6 @@ button {
     text-decoration: underline;
     background: #b1f83ffb;
 }
+
+
+

@@ -36,7 +36,13 @@ let nameOfCol = new Map([  // Порядок элементов имеет зн�
     ['gross', 'До вычетов'],
 ]);
 
-let form = new MakeAForm(request, 'Ключевое слово для поиска: ', 'Поиск произведён по слову: '); /* eslint-disable-line */
+let form = new MakeAForm(request, 'Ключевое слово для поиска: ', 'Поиск произведён по слову: ', 'Поиск'); /* eslint-disable-line */
 // new MakeAForm(request, 'Ключевое слово для поиска: ');
+
+function filter(param) {
+    newTable.changeContent(null, param);
+}
+
+new MakeAForm(filter, 'Фильтровать данные по слову: ', 'Фильтрация произведена по слову: ', 'Фильтровать');
 
 let newTable = new BicycleTableCreator('table', map, nameOfCol, 3);

@@ -32,10 +32,45 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRo
     //  Cлужебная ф-ция
     let transformData = transformDataFunc(data, map);
 
-    this.changeContent = function(content) {
-        transformData(content);
+    this.changeContent = function(content, filter) {
+        if (!data[Object.keys(data)[0]].length && content == null) {  //  Прекращение выполнения, если фильтрация запускается при отсутствии данных
+            return;
+        }
+        let copiedData = {};
+        if (filter == undefined) {
+            console.log('___ if ___', filter);
+            transformData(content);
+            for (let key in data) {
+                copiedData[key] = data[key].map(item => {
+                    return item;
+                });
+            }
+        } else {
+            for (let key in data) {
+                copiedData[key] = [];
+            }
+            for (let i = 0; i < data[Object.keys(data)[0]].length; i++) {
+                
+                
+                let isRowAppropriate = false; 
+                for (let key in data) {
+                    if (data[key][i] != null) {
+                        if (data[key][i].indexOf(filter) > -1) isRowAppropriate = true;
+                        break;
+                    }
+                    console.log(isRowAppropriate);
+                }
 
-        let sortAndPaginTable = sortAndPaginTableCreater(data, nameOfCol, tableHead, table, amountOfRow);
+                if (isRowAppropriate) {
+                    for (let key in data) {
+                        console.log(i);
+                        copiedData[key].push(data[key][i]);
+                    }
+                }
+            }
+        }
+
+        let sortAndPaginTable = sortAndPaginTableCreater(copiedData, nameOfCol, tableHead, table, amountOfRow);
         sortAndPaginTable();
 
     };

@@ -1,19 +1,26 @@
 
-function MakeAForm(request, text_1, text_2) {
+function MakeAForm(request, textBeforeInput, textUnderInput, textInButton) {
     (function() {  // Зачем я код ниже оборачивал в дополнительную ф-цию?
-        let input = document.createElement('input');
-        let button = document.createElement('button');
-        let div = document.createElement('div');
-        div.insertAdjacentHTML('afterbegin', '<span></span>');
-        div.insertAdjacentText('afterbegin', text_2);
+        let component = document.createElement('div');
+        component.classList.add('form');
 
-        button.innerHTML = 'Поиск';
+        let input = document.createElement('input');
+
+        let button = document.createElement('button');
+        button.innerHTML = textInButton;
         button.onclick = function() {
             request((input.value));
             div.lastChild.innerHTML = input.value;
         };
-        document.body.append(input, button, div);
-        input.insertAdjacentText('beforeBegin', text_1);
+        
+        let div = document.createElement('div');
+
+        component.append(input, button, div);
+        input.insertAdjacentText('beforeBegin', textBeforeInput);
+        div.insertAdjacentHTML('afterbegin', '<span></span>');
+        div.insertAdjacentText('afterbegin', textUnderInput);
+
+        document.body.append(component);
     }());    
 }
 
