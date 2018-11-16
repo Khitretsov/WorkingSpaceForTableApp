@@ -2,6 +2,20 @@ import filterAndSortAndPaginTableCreater from './filterAndSortAndPaginTableCreat
 
 export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRow) {
 
+    let arrForCheck = ['String', 'Object', 'Map', 'Number'];
+    try {
+        for (let i = 0; i < arguments.length; i++) {
+            if (arguments[i].__proto__.constructor.name != arrForCheck[i]) {
+                throw new Error(`Аргумент под номером ${i} имеет тип ${arguments[i].__proto__.constructor.name}, когда требуется тип ${arrForCheck[i]}`);
+            }
+        }
+        if (arguments[3] < 1 || (arguments[3] - Math.trunc(arguments[3])) != 0) {
+            throw new Error('Количество отображаемых в таблице строк должно быть целым числом, большим нуля');
+        }  
+    } catch(e) {
+        console.error(e);
+    }
+    
     let table = null;
     let map = null;
     let tableHead = null;

@@ -5,15 +5,26 @@ function MakeAForm(request, textBeforeInput, textUnderInput, textInButton) {
     let input = document.createElement('input');
 
     (function() {
+        function submit() {
+            request((input.value));
+            div.lastChild.innerHTML = input.value;
+            input.value = '';
+        }
+        
         let component = document.createElement('div');
         component.classList.add('form');
+
+        input.onkeydown = function(e) {
+            if (e.key == 'Enter') submit();
+        };
 
         let button = document.createElement('button');
         button.innerHTML = textInButton;
         button.onclick = function() {
-            request((input.value));
-            div.lastChild.innerHTML = input.value;
-            input.value = '';
+            submit();
+            // request((input.value));
+            // div.lastChild.innerHTML = input.value;
+            // input.value = '';
         };
         
         component.append(input, button, div);

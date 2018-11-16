@@ -6,6 +6,7 @@ export default function transformDataFunc(data, map) {  //  copiedData
             }
         }
         let arrOfData = content[Object.keys(content)[0]];
+
         arrOfData.forEach((item) => {
             map[Object.keys(map)[0]].forEach((item2) => {
                 if (typeof(item2) != 'object') {
@@ -18,10 +19,5 @@ export default function transformDataFunc(data, map) {  //  copiedData
                 } 
             });            
         });
-        // for (let key in data) {
-        //     copiedData[key] = data[key].map(item => {
-        //         return item;
-        //     });
-        // }
     };
 }
