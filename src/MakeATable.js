@@ -38,7 +38,6 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRo
         }
         let copiedData = {};
         if (filter == undefined) {
-            console.log('___ if ___', filter);
             transformData(content);
             for (let key in data) {
                 copiedData[key] = data[key].map(item => {
@@ -46,24 +45,26 @@ export default function BicycleTableCreator(name, mapping, nameOfCol, amountOfRo
                 });
             }
         } else {
+            
             for (let key in data) {
                 copiedData[key] = [];
             }
-            for (let i = 0; i < data[Object.keys(data)[0]].length; i++) {
-                
-                
+
+            for (let i = 0; i < data[Object.keys(data)[0]].length; i++) {   
                 let isRowAppropriate = false; 
                 for (let key in data) {
-                    if (data[key][i] != null) {
-                        if (data[key][i].indexOf(filter) > -1) isRowAppropriate = true;
-                        break;
-                    }
-                    console.log(isRowAppropriate);
-                }
 
+                    if (data[key][i] != null) {
+                        data[key][i] = data[key][i] + '';
+                        let regExp = new RegExp(filter, 'i');
+                        if (data[key][i].search(regExp) > -1) {
+                            isRowAppropriate = true;
+                            break;
+                        }
+                    }
+                }
                 if (isRowAppropriate) {
                     for (let key in data) {
-                        console.log(i);
                         copiedData[key].push(data[key][i]);
                     }
                 }

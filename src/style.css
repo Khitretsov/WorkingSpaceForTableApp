@@ -30,9 +30,9 @@ button {
 
 .form span {
     position: absolute;
-    right: 25em;
-    padding-right: 1.2em;
-    border-right: 1em solid rgb(226, 104, 104);
+    left: 25em;
+    padding-right: 0.2em;
+    border-right: 0.1em solid rgb(226, 104, 104);
 }
 
 .table {

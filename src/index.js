@@ -16,6 +16,7 @@ function request(param) {
         return response.json();
     }).then(function(myJson) {
         newTable.changeContent(myJson);
+        filterForm.clearFields(1, 1);
     });
 }
 
@@ -43,6 +44,6 @@ function filter(param) {
     newTable.changeContent(null, param);
 }
 
-new MakeAForm(filter, 'Фильтровать данные по слову: ', 'Фильтрация произведена по слову: ', 'Фильтровать');
+let filterForm = new MakeAForm(filter, 'Фильтровать данные по слову: ', 'Фильтрация произведена по слову: ', 'Фильтровать');
 
 let newTable = new BicycleTableCreator('table', map, nameOfCol, 3);
